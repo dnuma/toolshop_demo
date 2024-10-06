@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "ES2018",
+    "module": "ES2020",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "importHelpers": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "resolveJsonModule": true,
+    "lib": ["es2017", "dom"],
+    "paths": {
+      "@pages/*": ["/src/lib/pages/*"],
+      "@interfaces/*": ["/src/lib/interfaces/*"],
+      "@tests/*": ["/src/tests/*"],
+
+    }
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "artifacts/**"
+  ]
+}
