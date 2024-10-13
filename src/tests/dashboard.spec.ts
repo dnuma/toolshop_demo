@@ -1,30 +1,27 @@
 import { test, expect } from '@playwright/test';
-import { BasePage } from '../lib/pages/base.pages';
-
-test.beforeEach(async ({page}) => { 
-  const title = "Practice Software Testing";
-  await page.goto('/');
-  expect(page).toHaveTitle(title);
-});
+import { CategoriesPage } from '../lib/pages/categories.page';
 
 [
-  { name: 'handtools', expected: 'Hand Tools' },
-  { name: 'powertools', expected: 'Power Tools' },
-  { name: 'others', expected: 'Others' },
-  { name: 'specialtools', expected: 'Special Tools' },
+  { name: 'handtools', expected: 'Category: Hand Tools' },
+  { name: 'powertools', expected: 'Category: Power Tools' },
+  { name: 'other', expected: 'Category: Other' },
+  { name: 'specialtools', expected: 'Category: Special Tools' },
   { name: 'rentals', expected: 'Rentals' },
 ].forEach(({ name, expected }) => {
   test.describe("Categories validation", {
-    tag: ["categories", `@${name}`]
+    tag: ["@categories", `@${name}`]
   }, 
   () => {
+
     test.beforeEach(async ({ page }) => {
-      
+      const categoriesPage = new CategoriesPage(page);
+      await page.goto('/');
+      await categoriesPage.goTo(`${name}`);
     });
+
     test(`Testing with ${expected}`, async ({ page }) => {
-
-
-      await expect(page.getByRole('heading')).toHaveText(expected);
+      const categoriesPage = new CategoriesPage(page);
+      await expect(categoriesPage.pageTitle).toHaveText(expected);
     });
   });
 });
