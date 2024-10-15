@@ -1,5 +1,8 @@
 import { test, expect } from '@playwright/test';
 import { CategoriesPage } from '../lib/pages/categories.page';
+import { SignInPage } from '../lib/pages/signin.page';
+import { sign } from 'crypto';
+import exp from 'constants';
 
 [
   { name: 'handtools', expected: 'Category: Hand Tools' },
@@ -33,6 +36,11 @@ test.describe("Home, Contact and Sign In validation",
     tag: ["@dashboard"]
   },
   () => {
+
+    test.beforeEach(async ({ page }) => {
+      await page.goto('/');
+    });
+
     test("Home", {
       tag: "@home",
       
@@ -49,7 +57,13 @@ test.describe("Home, Contact and Sign In validation",
       tag: "@signin",
       
     }, async( { page }) => {
-      
+      const signInPage = new SignInPage(page);
+      await signInPage.goTo();
+      await expect.soft(signInPage.title).toBeVisible();
+      await expect.soft(signInPage.email).toBeVisible();
+      await expect.soft(signInPage.password).toBeVisible();
+      await expect.soft(signInPage.loginBtn).toBeVisible();
+
     })
   }
 )
