@@ -1,8 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { CategoriesPage } from '../lib/pages/categories.page';
 import { SignInPage } from '../lib/pages/signin.page';
-import { sign } from 'crypto';
-import exp from 'constants';
 
 [
   { name: 'handtools', expected: 'Category: Hand Tools' },
