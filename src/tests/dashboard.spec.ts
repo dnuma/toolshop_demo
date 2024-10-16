@@ -1,8 +1,12 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Locator } from '@playwright/test';
 import { CategoriesPage } from '../lib/pages/categories.page';
 import { SignInPage } from '../lib/pages/signin.page';
 import { ContactForm } from '../lib/interfaces/contactForm';
 import { ContactPage } from '../lib/pages/contact.page';
+
+const softExpectVisible = async (element: Locator) => {
+  await expect.soft(element).toBeVisible();
+};
 
 [
   { name: 'handtools', expected: 'Category: Hand Tools' },
@@ -28,6 +32,8 @@ import { ContactPage } from '../lib/pages/contact.page';
     });
   });
 });
+
+
 
 test.describe("Home, Contact and Sign In validation",
   {
@@ -62,7 +68,7 @@ test.describe("Home, Contact and Sign In validation",
       await contactPage.goTo();
       await contactPage.fillForm(userInfo);
 
-      await expect.soft(contactPage.confirmationToaster).toBeVisible();
+      await softExpectVisible(contactPage.confirmationToaster);
 
     })
 
@@ -72,10 +78,10 @@ test.describe("Home, Contact and Sign In validation",
     }, async( { page }) => {
       const signInPage = new SignInPage(page);
       await signInPage.goTo();
-      await expect.soft(signInPage.title).toBeVisible();
-      await expect.soft(signInPage.email).toBeVisible();
-      await expect.soft(signInPage.password).toBeVisible();
-      await expect.soft(signInPage.loginBtn).toBeVisible();
+      await softExpectVisible(signInPage.title);
+      await softExpectVisible(signInPage.email);
+      await softExpectVisible(signInPage.password);
+      await softExpectVisible(signInPage.loginBtn);
 
     })
   }
