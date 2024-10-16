@@ -4,6 +4,7 @@ import { ContactForm } from "../interfaces/contactForm";
 
 export class ContactPage extends BasePage {
   readonly page: Page;
+  readonly navContact: Locator;
   readonly fname: Locator;
   readonly lname: Locator;
   readonly email: Locator;
@@ -11,16 +12,24 @@ export class ContactPage extends BasePage {
   readonly message: Locator;
   readonly submitBtn: Locator;
 
+  readonly confirmationToaster: Locator;
+
   constructor(page: Page) {
     super(page);
     this.page = page;
+    this.navContact = this.page.locator('[data-test="nav-contact"]');
     this.fname = this.page.locator('[data-test="first-name"]');
     this.lname = this.page.locator('[data-test="last-name"]');
     this.email = this.page.locator('[data-test="email"]');
     this.subject = this.page.locator('[data-test="subject"]');
     this.message = this.page.locator('[data-test="message"]');
     this.submitBtn = this.page.locator('[data-test="contact-submit"]');
+    this.confirmationToaster = this.page.getByText(`Thanks for your message! We will`);
 
+  }
+
+  async goTo() {
+    await this.navContact.click();
   }
 
   async fillForm(userInfo: ContactForm) {
@@ -34,6 +43,7 @@ export class ContactPage extends BasePage {
     await this.message.fill(userInfo.message);
     await this.submitBtn.click();
 
+    await this.page.waitForLoadState('domcontentloaded');
   }
 
 }

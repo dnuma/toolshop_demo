@@ -1,6 +1,8 @@
 import { test, expect } from '@playwright/test';
 import { CategoriesPage } from '../lib/pages/categories.page';
 import { SignInPage } from '../lib/pages/signin.page';
+import { ContactForm } from '../lib/interfaces/contactForm';
+import { ContactPage } from '../lib/pages/contact.page';
 
 [
   { name: 'handtools', expected: 'Category: Hand Tools' },
@@ -27,8 +29,6 @@ import { SignInPage } from '../lib/pages/signin.page';
   });
 });
 
-
-
 test.describe("Home, Contact and Sign In validation",
   {
     tag: ["@dashboard"]
@@ -45,12 +45,27 @@ test.describe("Home, Contact and Sign In validation",
     }, async( { page }) => {
       
     })
+    
     test("Contact", {
       tag: "@contact",
       
     }, async( { page }) => {
-      
+      const userInfo: ContactForm = {
+        fname: 'John', 
+        lname: 'Doe',
+        email: 'john.doe@example.com',
+        subject: 'webmaster', 
+        message: `Hello, I need help with my website. The performance is not the same as last month.` 
+      }
+
+      const contactPage = new ContactPage(page);
+      await contactPage.goTo();
+      await contactPage.fillForm(userInfo);
+
+      await expect.soft(contactPage.confirmationToaster).toBeVisible();
+
     })
+
     test("Sign In", {
       tag: "@signin",
       
