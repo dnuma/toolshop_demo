@@ -29,7 +29,7 @@ const softExpectVisible = async (element: Locator) => {
 
     test(`Testing with ${expected}`, async ({ page }) => {
       const categoriesPage = new CategoriesPage(page);
-      await expect(categoriesPage.pageTitle).toHaveText(expected);
+      await expect.soft(categoriesPage.pageTitle).toHaveText(expected);
     });
   });
 });
