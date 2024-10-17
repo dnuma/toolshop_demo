@@ -4,7 +4,6 @@ import { ContactForm } from "../interfaces/contactForm";
 
 export class ContactPage extends BasePage {
   readonly page: Page;
-  readonly navContact: Locator;
   readonly fname: Locator;
   readonly lname: Locator;
   readonly email: Locator;
@@ -17,7 +16,6 @@ export class ContactPage extends BasePage {
   constructor(page: Page) {
     super(page);
     this.page = page;
-    this.navContact = this.page.locator('[data-test="nav-contact"]');
     this.fname = this.page.locator('[data-test="first-name"]');
     this.lname = this.page.locator('[data-test="last-name"]');
     this.email = this.page.locator('[data-test="email"]');

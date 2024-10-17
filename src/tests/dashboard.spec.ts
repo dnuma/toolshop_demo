@@ -3,6 +3,7 @@ import { CategoriesPage } from '../lib/pages/categories.page';
 import { SignInPage } from '../lib/pages/signin.page';
 import { ContactForm } from '../lib/interfaces/contactForm';
 import { ContactPage } from '../lib/pages/contact.page';
+import { HomePage } from '../lib/pages/home.page';
 
 const softExpectVisible = async (element: Locator) => {
   await expect.soft(element).toBeVisible();
@@ -33,8 +34,6 @@ const softExpectVisible = async (element: Locator) => {
   });
 });
 
-
-
 test.describe("Home, Contact and Sign In validation",
   {
     tag: ["@dashboard"]
@@ -49,7 +48,10 @@ test.describe("Home, Contact and Sign In validation",
       tag: "@home",
       
     }, async( { page }) => {
-      
+      const homePage = new HomePage(page);
+      await softExpectVisible(homePage.sortTitle);
+      await softExpectVisible(homePage.banner);
+      await softExpectVisible(homePage.filterTitle);
     })
     
     test("Contact", {
