@@ -3,7 +3,6 @@ import { BasePage } from "./base.page";
 
 export class SignInPage extends BasePage {
   readonly page: Page;
-  readonly navSignIn: Locator;
   readonly title: Locator;
   readonly email: Locator;
   readonly password: Locator;
@@ -12,7 +11,6 @@ export class SignInPage extends BasePage {
   constructor(page: Page) {
     super(page);
     this.page = page;
-    this.navSignIn = this.page.locator('[data-test="nav-sign-in"]');
     this.title = this.page.getByRole('heading', { name: 'Login' });
 
     this.email = this.page.locator('[data-test="email"]');

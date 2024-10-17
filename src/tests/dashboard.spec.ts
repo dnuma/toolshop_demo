@@ -33,8 +33,6 @@ const softExpectVisible = async (element: Locator) => {
   });
 });
 
-
-
 test.describe("Home, Contact and Sign In validation",
   {
     tag: ["@dashboard"]
