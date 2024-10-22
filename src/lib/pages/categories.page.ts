@@ -12,6 +12,7 @@ export class CategoriesPage extends BasePage {
   readonly pageTitle: Locator;
 
   readonly sort: Locator;
+  readonly cardTitle: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -23,6 +24,7 @@ export class CategoriesPage extends BasePage {
     this.navRentals = this.page.locator('[data-test="nav-rentals"]');
     this.pageTitle = this.page.locator('[data-test="page-title"]');
     this.sort = this.page.locator('[data-test="sort"]');
+    this.cardTitle = this.page.locator(`.card-title`);
   }
 
   async goTo(category: string) {
@@ -75,6 +77,21 @@ export class CategoriesPage extends BasePage {
       }
       default: break;
     }
+
+    await this.page.waitForSelector('.card-title');
+  }
+
+  async getResults(): Promise<string[]> {
+    
+    const titles: string[] = [];
+    const cardsQty = await this.cardTitle.count();
+    
+    for (let i = 0; i < cardsQty; i++) {
+      const text = await this.cardTitle.nth(i).textContent();
+      titles.push(text);
+    }
+        
+    return titles;
   }
 
 
