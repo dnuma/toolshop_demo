@@ -12,7 +12,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: "html",
   use: {
-    baseURL: "",
+    baseURL: "https://www.practicesoftwaretesting.com",
     trace: "on-first-retry",
   },
 
