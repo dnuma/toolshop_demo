@@ -13,6 +13,7 @@ export class CategoriesPage extends BasePage {
 
   readonly sort: Locator;
   readonly cardTitle: Locator;
+  readonly cardPrice: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -25,6 +26,7 @@ export class CategoriesPage extends BasePage {
     this.pageTitle = this.page.locator('[data-test="page-title"]');
     this.sort = this.page.locator('[data-test="sort"]');
     this.cardTitle = this.page.locator(`.card-title`);
+    this.cardPrice = this.page.locator(`[data-test="product-price"]`);
   }
 
   async goTo(category: string) {
@@ -81,18 +83,17 @@ export class CategoriesPage extends BasePage {
     await this.page.waitForSelector('.card-title');
   }
 
-  async getResults(): Promise<string[]> {
+  async getCardInfo(card: Locator): Promise<string[]> {
     
     const titles: string[] = [];
-    const cardsQty = await this.cardTitle.count();
+    const cardsQty = await card.count();
     
     for (let i = 0; i < cardsQty; i++) {
-      const text = await this.cardTitle.nth(i).textContent();
+      const text = await card.nth(i).textContent();
       titles.push(text);
     }
         
     return titles;
   }
-
 
 }
