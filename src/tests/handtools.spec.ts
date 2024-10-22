@@ -36,6 +36,16 @@ test.describe("Categories - Hand tools testing",
       
     })
 
+    test("Sorting Z-A", {
+      tag: "@sorting",      
+    }, async( { page }) => {
+      const categoriesPage = new CategoriesPage(page);
+      await categoriesPage.sorting(Sorting.ZtoA);
+      const results = await categoriesPage.getResults();
+      const resultsAssorted = results.toSorted().reverse();
 
+      expect.soft(results === resultsAssorted);
+      
+    })
   }
 )
