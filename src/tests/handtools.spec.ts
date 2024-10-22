@@ -53,6 +53,37 @@ test.describe("Categories - Hand tools testing",
       
     })
 
-    
+    test.skip("Sorting Price High - Low", {
+      tag: "@sorting",      
+    }, async( { page }) => {
+      const categoriesPage = new CategoriesPage(page);
+      const cardPriceLocator = categoriesPage.cardPrice;
+
+      await categoriesPage.sorting(Sorting.PriceHightoLow);
+      const results = await categoriesPage.getCardInfo(cardPriceLocator);
+      const resultsAssorted = results.toSorted().reverse();
+
+      expect.soft(results === resultsAssorted);
+      
+    })
+
+    test.skip("Sorting Price Low - High", {
+      tag: "@sorting",      
+    }, async( { page }) => {
+      const categoriesPage = new CategoriesPage(page);
+      const cardPriceLocator = categoriesPage.cardPrice;
+
+      await categoriesPage.sorting(Sorting.PriceLowtoHigh);
+      const results = await categoriesPage.getCardInfo(cardPriceLocator);
+      console.log(results);
+      
+      const resultsAssorted = results.toSorted().reverse();
+      console.log(resultsAssorted);
+      console.log(results);
+      
+
+      expect.soft(results).toEqual(resultsAssorted);
+      
+    })
   }
 )
