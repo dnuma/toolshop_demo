@@ -80,7 +80,7 @@ export class CategoriesPage extends BasePage {
       default: break;
     }
 
-    await this.page.waitForSelector('.card-title');
+    await this.page.waitForTimeout(2000);
   }
 
   async getCardInfo(card: Locator): Promise<string[]> {
@@ -89,7 +89,7 @@ export class CategoriesPage extends BasePage {
     const cardsQty = await card.count();
     
     for (let i = 0; i < cardsQty; i++) {
-      const text = await card.nth(i).textContent();
+      const text = await card.nth(i).textContent();      
       titles.push(text);
     }
         

@@ -25,7 +25,7 @@ test.describe("Categories - Hand tools testing",
       PriceLowtoHigh = "l-h"
     }
 
-    test.skip("Sorting A-Z", {
+    test("Sorting A-Z", {
       tag: "@sorting",      
     }, async( { page }) => {
       const categoriesPage = new CategoriesPage(page);
@@ -33,7 +33,7 @@ test.describe("Categories - Hand tools testing",
 
       await categoriesPage.sorting(Sorting.AtoZ);
       const results = await categoriesPage.getCardInfo(cardTitleLocator);
-      const resultsAssorted = results.toSorted();
+      const resultsAssorted = results.toSorted((a, b) => a.localeCompare(b)); 
 
       expect.soft(results).toEqual(resultsAssorted);
       
@@ -47,13 +47,13 @@ test.describe("Categories - Hand tools testing",
 
       await categoriesPage.sorting(Sorting.ZtoA);
       const results = await categoriesPage.getCardInfo(cardTitleLocator);
-      const resultsAssorted = results.toSorted().reverse();
+      const resultsAssorted = results.toSorted((a, b) => b.localeCompare(a));   
 
       expect.soft(results).toEqual(resultsAssorted);
       
     })
 
-    test.skip("Sorting Price High - Low", {
+    test("Sorting Price High - Low", {
       tag: "@sorting",      
     }, async( { page }) => {
       const categoriesPage = new CategoriesPage(page);
@@ -61,28 +61,32 @@ test.describe("Categories - Hand tools testing",
 
       await categoriesPage.sorting(Sorting.PriceHightoLow);
       const results = await categoriesPage.getCardInfo(cardPriceLocator);
-      const resultsAssorted = results.toSorted().reverse();
 
-      expect.soft(results === resultsAssorted);
+      // create numeric array
+      const parsedPrices = results.map(price => parseInt(price.replace(/[$.]/g, ''), 10));      
+      
+      // Confirm sorting and assert
+      const pricesAssorted = parsedPrices.toSorted((a, b) => b - a);      
+      expect.soft(parsedPrices).toEqual(pricesAssorted);
       
     })
 
-    test.skip("Sorting Price Low - High", {
+    test("Sorting Price Low - High", {
       tag: "@sorting",      
     }, async( { page }) => {
       const categoriesPage = new CategoriesPage(page);
       const cardPriceLocator = categoriesPage.cardPrice;
-
+      
+      // await page.pause()
       await categoriesPage.sorting(Sorting.PriceLowtoHigh);
       const results = await categoriesPage.getCardInfo(cardPriceLocator);
-      console.log(results);
-      
-      const resultsAssorted = results.toSorted().reverse();
-      console.log(resultsAssorted);
-      console.log(results);
-      
 
-      expect.soft(results).toEqual(resultsAssorted);
+      // create numeric array
+      const parsedPrices = results.map(price => parseInt(price.replace(/[$.]/g, ''), 10));      
+      
+      // Confirm sorting and assert
+      const pricesAssorted = parsedPrices.toSorted((a, b) => a - b);      
+      expect.soft(parsedPrices).toEqual(pricesAssorted);
       
     })
   }
