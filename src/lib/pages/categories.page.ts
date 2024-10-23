@@ -11,6 +11,10 @@ export class CategoriesPage extends BasePage {
 
   readonly pageTitle: Locator;
 
+  readonly sort: Locator;
+  readonly cardTitle: Locator;
+  readonly cardPrice: Locator;
+
   constructor(page: Page) {
     super(page);
     this.page = page;
@@ -20,6 +24,9 @@ export class CategoriesPage extends BasePage {
     this.navSpecialTools = this.page.locator('[data-test="nav-special-tools"]');
     this.navRentals = this.page.locator('[data-test="nav-rentals"]');
     this.pageTitle = this.page.locator('[data-test="page-title"]');
+    this.sort = this.page.locator('[data-test="sort"]');
+    this.cardTitle = this.page.locator(`.card-title`);
+    this.cardPrice = this.page.locator(`[data-test="product-price"]`);
   }
 
   async goTo(category: string) {
@@ -46,8 +53,47 @@ export class CategoriesPage extends BasePage {
         await this.navRentals.click();
         break;
       }
+      default: break;
     }
   }
 
+  async sorting(sortType: string) {
+    await this.sort.click();
+
+    switch(sortType) {
+      case "a-z": { // Name A to Z
+        await this.sort.selectOption('name,asc');
+        break;
+      }
+      case "z-a": { // Name Z to A
+        await this.sort.selectOption('name,desc');
+        break;
+      }
+      case "h-l": { // Price High to Low
+        await this.sort.selectOption('price,desc');
+        break;
+      }
+      case "l-h": {  // Price Low to High
+        await this.sort.selectOption('price,asc');
+        break;
+      }
+      default: break;
+    }
+
+    await this.page.waitForTimeout(2000);
+  }
+
+  async getCardInfo(card: Locator): Promise<string[]> {
+    
+    const titles: string[] = [];
+    const cardsQty = await card.count();
+    
+    for (let i = 0; i < cardsQty; i++) {
+      const text = await card.nth(i).textContent();      
+      titles.push(text);
+    }
+        
+    return titles;
+  }
 
 }
