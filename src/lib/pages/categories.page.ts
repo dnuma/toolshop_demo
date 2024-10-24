@@ -10,6 +10,7 @@ export class CategoriesPage extends BasePage {
   readonly navRentals: Locator;
 
   readonly pageTitle: Locator;
+  readonly pageEmpty: Locator;
 
   readonly sort: Locator;
   readonly cardTitle: Locator;
@@ -28,6 +29,7 @@ export class CategoriesPage extends BasePage {
     this.sort = this.page.locator('[data-test="sort"]');
     this.cardTitle = this.page.locator(`.card-title`);
     this.cardPrice = this.page.locator(`[data-test="product-price"]`);
+    this.pageEmpty = this.page.locator('[data-test="category-empty"]');
   }
 
   async goTo(category: string) {
