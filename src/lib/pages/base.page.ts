@@ -15,4 +15,8 @@ export class BasePage {
     this.navSignIn = this.page.locator('[data-test="nav-sign-in"]');
   }
 
+  async openProduct(product: Locator) {
+    await product.click();
+  }
+
 }

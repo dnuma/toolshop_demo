@@ -16,6 +16,7 @@ export class CategoriesPage extends BasePage {
   readonly cardTitle: Locator;
   readonly cardPrice: Locator;
   readonly category: Locator;
+  readonly brand: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -30,6 +31,7 @@ export class CategoriesPage extends BasePage {
     this.cardTitle = this.page.locator(`.card-title`);
     this.cardPrice = this.page.locator(`[data-test="product-price"]`);
     this.pageEmpty = this.page.locator('[data-test="category-empty"]');
+    this.brand = this.page.getByLabel('brand');
   }
 
   async goTo(category: string) {
