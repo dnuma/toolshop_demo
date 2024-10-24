@@ -24,11 +24,18 @@ test.describe("Categories - Power tools testing",
       tag: "@grinder",      
     }, async( { page }) => {
       const categoriesPage = new CategoriesPage(page);
-      const cardTitle = categoriesPage.cardTitle;
+      const cardTitleLocator = categoriesPage.cardTitle;
       
       await categoriesPage.filterBy(Category.Grinder);
-
-      // Fetch results and compare
+      
+      if(await categoriesPage.pageEmpty.isVisible()){
+        expect(true, { message: "There are no products found"});
+      }
+      else {
+        const results = await categoriesPage.getCardInfo(cardTitleLocator);
+        const resultsFiltered = results.filter((title) => title.includes(Category.Grinder));
+        expect.soft(results).toEqual(resultsFiltered);
+      }
       
     })
   }
