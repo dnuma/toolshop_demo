@@ -55,7 +55,7 @@ test.describe("Categories - Power tools testing",
         expect.soft(results).toEqual(resultsFiltered);
       }
     })
-
+    
     test("Filter by Saw", {
       tag: "@saw",      
     }, async( { page }) => {
