@@ -1,10 +1,5 @@
-import { test, expect, Locator } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import { CategoriesPage } from '../lib/pages/categories.page';
-import { resourceLimits } from 'worker_threads';
-
-const softExpectVisible = async (element: Locator) => {
-  await expect.soft(element).toBeVisible();
-};
 
 test.beforeEach(async ({ page }) => {
   const categoriesPage = new CategoriesPage(page);
@@ -77,7 +72,6 @@ test.describe("Categories - Hand tools testing",
       const categoriesPage = new CategoriesPage(page);
       const cardPriceLocator = categoriesPage.cardPrice;
       
-      // await page.pause()
       await categoriesPage.sorting(Sorting.PriceLowtoHigh);
       const results = await categoriesPage.getCardInfo(cardPriceLocator);
 

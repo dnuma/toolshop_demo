@@ -14,6 +14,7 @@ export class CategoriesPage extends BasePage {
   readonly sort: Locator;
   readonly cardTitle: Locator;
   readonly cardPrice: Locator;
+  readonly category: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -82,6 +83,7 @@ export class CategoriesPage extends BasePage {
 
     await this.page.waitForTimeout(2000);
   }
+
 
   async getCardInfo(card: Locator): Promise<string[]> {
     
