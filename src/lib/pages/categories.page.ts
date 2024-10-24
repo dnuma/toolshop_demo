@@ -84,6 +84,12 @@ export class CategoriesPage extends BasePage {
     await this.page.waitForTimeout(2000);
   }
 
+  async filterBy(filter:string) {
+    const category = this.page.locator('#filters').getByText(`${filter}`, { exact: true });
+
+    await category.click();
+    await this.page.waitForTimeout(2000);    
+  }
 
   async getCardInfo(card: Locator): Promise<string[]> {
     
