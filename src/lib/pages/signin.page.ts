@@ -23,14 +23,11 @@ export class SignInPage extends BasePage {
   constructor(page: Page) {
     super(page);
     this.page = page;
-    this.page.setDefaultTimeout(10000); // Set default timeout to 10 seconds
-
     this.title = this.page.getByRole("heading", { name: "Login" });
 
     this.email = this.page.locator('[data-test="email"]');
     this.password = this.page.locator('[data-test="password"]');
     this.loginBtn = this.page.locator('[data-test="login-submit"]');
-    // this.registerLink = this.page.locator('[data-test="register-link"]');
     this.registerLink = this.page.locator(`a:has-text("Register your account")`);
 
     this.fname = this.page.locator('[data-test="first-name"]');
@@ -42,6 +39,7 @@ export class SignInPage extends BasePage {
     this.state = this.page.locator('[data-test="state"]');
     this.country = this.page.locator('[data-test="country"]');
     this.phone = this.page.locator('[data-test="phone"]');
+    this.registerBtn = this.page.locator('[data-test="register-submit"]');
   }
 
   async goTo() {
@@ -49,16 +47,14 @@ export class SignInPage extends BasePage {
   }
 
   async register(email: string, password: string) {
-    // await this.page.pause();
     const phone = this.generateRandomPhone();
     const dob = this.generateRandomDob();
     const country = this.selectRandomCountry();
 
-    await this.page.pause();
-    // Click the register link with increased timeout
     await this.registerLink.click();
     await this.fname.fill("David");
     await this.lname.fill("Numa");
+    await this.dob.fill(dob);
     await this.address.fill("123 Main St");
     await this.postal.fill("12345");
     await this.city.fill("Hogsmeade");
@@ -67,7 +63,6 @@ export class SignInPage extends BasePage {
     await this.phone.fill(phone);
     await this.email.fill(email);
     await this.password.fill(password);
-    await this.dob.fill(dob);
     await this.registerBtn.click();
   }
 
