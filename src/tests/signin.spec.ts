@@ -27,10 +27,9 @@ test.describe(
 
     test("Sign in the user", async ({ page }) => {
       const signInPage = new SignInPage(page);
-
+      const fullName = `${process.env.FIRST_NAME} ${process.env.LAST_NAME}`;
       await signInPage.signIn(email, password);
-      await page.pause();
-      // await expect(signInPage.title).toBeVisible();
+      await expect(signInPage.navMenu).toContainText(fullName);
     });
   }
 );

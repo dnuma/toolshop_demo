@@ -1,6 +1,7 @@
 import type { Page, Locator } from "@playwright/test";
 import { BasePage } from "./base.page";
 import dotenv from 'dotenv';
+dotenv.config();
 
 export class SignInPage extends BasePage {
   readonly page: Page;
@@ -20,6 +21,8 @@ export class SignInPage extends BasePage {
   readonly country: Locator;
   readonly phone: Locator;
   readonly registerBtn: Locator;
+
+  readonly navMenu: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -41,6 +44,7 @@ export class SignInPage extends BasePage {
     this.country = this.page.locator('[data-test="country"]');
     this.phone = this.page.locator('[data-test="phone"]');
     this.registerBtn = this.page.locator('[data-test="register-submit"]');
+    this.navMenu = this.page.locator('[data-test="nav-menu"]');
   }
 
   async goTo() {
@@ -89,7 +93,7 @@ export class SignInPage extends BasePage {
       password.length < 8 ||
       !/[A-Z]/.test(password) ||
       !/[a-z]/.test(password) ||
-      !/[!@#$%^&*()_+\[\]{}|;:,.<>?]/.test(password)
+      !/[!@#$%^&*()_+[\]{}|;:,.<>?]/.test(password)
     ) {
       password = "";
       for (let i = 0; i < 8; i++) {
