@@ -14,6 +14,7 @@ export default defineConfig({
   use: {
     baseURL: "https://www.practicesoftwaretesting.com",
     trace: "on-first-retry",
+    actionTimeout: 10 * 1000, 
   },
 
   /* Configure projects for major browsers */
