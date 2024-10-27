@@ -1,5 +1,6 @@
 import type { Page, Locator } from "@playwright/test";
 import { BasePage } from "./base.page";
+import dotenv from 'dotenv';
 
 export class SignInPage extends BasePage {
   readonly page: Page;
@@ -52,8 +53,8 @@ export class SignInPage extends BasePage {
     const country = this.selectRandomCountry();
 
     await this.registerLink.click();
-    await this.fname.fill("David");
-    await this.lname.fill("Numa");
+    await this.fname.fill(process.env.FIRST_NAME);
+    await this.lname.fill(process.env.LAST_NAME);
     await this.dob.fill(dob);
     await this.address.fill("123 Main St");
     await this.postal.fill("12345");
@@ -64,6 +65,12 @@ export class SignInPage extends BasePage {
     await this.email.fill(email);
     await this.password.fill(password);
     await this.registerBtn.click();
+  }
+
+  async signIn(email: string, password: string) {
+    await this.email.fill(email);
+    await this.password.fill(password);
+    await this.loginBtn.click();
   }
 
   generateRandomEmail() {
