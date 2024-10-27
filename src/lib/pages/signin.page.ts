@@ -23,13 +23,16 @@ export class SignInPage extends BasePage {
   constructor(page: Page) {
     super(page);
     this.page = page;
-    this.title = this.page.getByRole('heading', { name: 'Login' });
+    this.page.setDefaultTimeout(10000); // Set default timeout to 10 seconds
+
+    this.title = this.page.getByRole("heading", { name: "Login" });
 
     this.email = this.page.locator('[data-test="email"]');
     this.password = this.page.locator('[data-test="password"]');
     this.loginBtn = this.page.locator('[data-test="login-submit"]');
+    // this.registerLink = this.page.locator('[data-test="register-link"]');
+    this.registerLink = this.page.locator(`a:has-text("Register your account")`);
 
-    this.registerLink = this.page.locator('[data-test="register-link"]');
     this.fname = this.page.locator('[data-test="first-name"]');
     this.lname = this.page.locator('[data-test="last-name"]');
     this.dob = this.page.locator('[data-test="dob"]');
@@ -45,27 +48,27 @@ export class SignInPage extends BasePage {
     await this.navSignIn.click();
   }
 
-  async register() {    
+  async register(email: string, password: string) {
+    // await this.page.pause();
     const phone = this.generateRandomPhone();
     const dob = this.generateRandomDob();
     const country = this.selectRandomCountry();
-    const email = this.generateRandomEmail();
-    const password = this.generateRandomPassword();
-    
+
+    await this.page.pause();
+    // Click the register link with increased timeout
     await this.registerLink.click();
-    await this.fname.fill('David');
-    await this.lname.fill('Numa');
-    await this.dob.fill(dob);
-    await this.address.fill('123 Main St');
-    await this.postal.fill('12345');
-    await this.city.fill('Hogsmeade');
-    await this.state.fill('Village');
+    await this.fname.fill("David");
+    await this.lname.fill("Numa");
+    await this.address.fill("123 Main St");
+    await this.postal.fill("12345");
+    await this.city.fill("Hogsmeade");
+    await this.state.fill("Village");
     await this.country.selectOption({ value: country });
     await this.phone.fill(phone);
     await this.email.fill(email);
     await this.password.fill(password);
+    await this.dob.fill(dob);
     await this.registerBtn.click();
-    
   }
 
   generateRandomEmail() {
@@ -75,17 +78,37 @@ export class SignInPage extends BasePage {
   }
 
   generateRandomPassword() {
-    let password = '';
-    while (password.length < 6) {
-        password = Math.random().toString(36).substring(2, 12);
+    const symbols = "!@#$%^&*()_+[]{}|;:,.<>?";
+    const getRandomChar = (chars: string) =>
+      chars[Math.floor(Math.random() * chars.length)];
+
+    let password = "";
+    while (
+      password.length < 8 ||
+      !/[A-Z]/.test(password) ||
+      !/[a-z]/.test(password) ||
+      !/[!@#$%^&*()_+\[\]{}|;:,.<>?]/.test(password)
+    ) {
+      password = "";
+      for (let i = 0; i < 8; i++) {
+        const charType = Math.floor(Math.random() * 4);
+        if (charType === 0) {
+          password += getRandomChar("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+        } else if (charType === 1) {
+          password += getRandomChar("abcdefghijklmnopqrstuvwxyz");
+        } else if (charType === 2) {
+          password += getRandomChar("0123456789");
+        } else {
+          password += getRandomChar(symbols);
+        }
+      }
     }
-    console.log(`Generated password: ${password}`);    
-    return password.slice(0, 10);
-}
+    return password;
+  }
 
   selectRandomCountry() {
     // All country codes can be added here, only this few for testing purposes
-    const countries = ['VG', 'UA', 'CO', 'GB', 'US', 'CA'];
+    const countries = ["VG", "UA", "CO", "GB", "US", "CA"];
     const randomIndex = Math.floor(Math.random() * countries.length);
     return countries[randomIndex];
   }
@@ -96,16 +119,51 @@ export class SignInPage extends BasePage {
 
   generateRandomDob() {
     const date = new Date();
-    date.setFullYear(date.getFullYear() - Math.floor(Math.random() * 100));
-    date.setMonth(Math.floor(Math.random() * 12));
-    date.setDate(Math.floor(Math.random() * 28));
+    const currentYear = date.getFullYear();
+    const minYear = currentYear - 100;
+    const maxYear = currentYear - 20;
 
-    const day = date.getDate().toString().padStart(2, '0');
-    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    const month = monthNames[date.getMonth()];
+    date.setFullYear(Math.floor(Math.random() * (maxYear - minYear + 1)) + minYear);
+    date.setMonth(Math.floor(Math.random() * 12));
+    date.setDate(Math.floor(Math.random() * 28) + 1); // Ensure date is between 1 and 28
+
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are 0-based
     const year = date.getFullYear();
 
-    return `${day}-${month}-${year}`;
+    return `${year}-${month}-${day}`;
 }
 
+//   generateRandomDob() {
+//     const date = new Date();
+//     const currentYear = date.getFullYear();
+//     const minYear = currentYear - 100;
+//     const maxYear = currentYear - 20;
+
+//     date.setFullYear(
+//       Math.floor(Math.random() * (maxYear - minYear + 1)) + minYear
+//     );
+//     date.setMonth(Math.floor(Math.random() * 12));
+//     date.setDate(Math.floor(Math.random() * 28));
+
+//     const day = date.getDate().toString().padStart(2, "0");
+//     const monthNames = [
+//       "Jan",
+//       "Feb",
+//       "Mar",
+//       "Apr",
+//       "May",
+//       "Jun",
+//       "Jul",
+//       "Aug",
+//       "Sep",
+//       "Oct",
+//       "Nov",
+//       "Dec",
+//     ];
+//     const month = monthNames[date.getMonth()];
+//     const year = date.getFullYear();
+
+//     return `${day}-${month}-${year}`;
+//   }
 }
