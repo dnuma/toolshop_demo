@@ -128,37 +128,4 @@ export class SignInPage extends BasePage {
 
     return `${year}-${month}-${day}`;
 }
-
-//   generateRandomDob() {
-//     const date = new Date();
-//     const currentYear = date.getFullYear();
-//     const minYear = currentYear - 100;
-//     const maxYear = currentYear - 20;
-
-//     date.setFullYear(
-//       Math.floor(Math.random() * (maxYear - minYear + 1)) + minYear
-//     );
-//     date.setMonth(Math.floor(Math.random() * 12));
-//     date.setDate(Math.floor(Math.random() * 28));
-
-//     const day = date.getDate().toString().padStart(2, "0");
-//     const monthNames = [
-//       "Jan",
-//       "Feb",
-//       "Mar",
-//       "Apr",
-//       "May",
-//       "Jun",
-//       "Jul",
-//       "Aug",
-//       "Sep",
-//       "Oct",
-//       "Nov",
-//       "Dec",
-//     ];
-//     const month = monthNames[date.getMonth()];
-//     const year = date.getFullYear();
-
-//     return `${day}-${month}-${year}`;
-//   }
 }

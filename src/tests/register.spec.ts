@@ -17,14 +17,12 @@ test.describe(
     let password = "";
 
     test("", async ({ page }) => {
-      // test.step("Register random user", async () => {
         const signInPage = new SignInPage(page);
-        email = await signInPage.generateRandomEmail();
-        password = await signInPage.generateRandomPassword();
+        email = signInPage.generateRandomEmail();
+        password = signInPage.generateRandomPassword();
         
         await signInPage.register(email, password);
         await expect(signInPage.title).toBeVisible();
-      // });
     });
   }
 );
