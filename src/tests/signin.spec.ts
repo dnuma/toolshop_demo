@@ -8,7 +8,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test.describe(
-  "Sign In testing",
+  "Register and sign In testing",
   {
     tag: ["@register", "@signIn"],
   },
@@ -16,7 +16,7 @@ test.describe(
     let email = "";
     let password = "";
 
-    test("Register and Sign In user", async ({ page }) => {
+    test("", async ({ page }) => {
       const signInPage = new SignInPage(page);
 
       await test.step("Generate random user credentials", async () => {
