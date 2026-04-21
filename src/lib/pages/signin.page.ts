@@ -73,6 +73,7 @@ export class SignInPage extends BasePage {
     await this.email.fill(email);
     await this.password.fill(password);
     await this.registerBtn.click();
+    await this.title.waitFor(); // ensure we're back on the Login page before returning
 
     console.log(`Registered user: ${email} / ${password}`);
     

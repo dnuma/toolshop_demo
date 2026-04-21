@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "target": "ES2018",
-    "module": "ES2020",
-    "moduleResolution": "node",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -12,18 +12,13 @@
     "strictNullChecks": false,
     "noImplicitAny": false,
     "resolveJsonModule": true,
-    "lib": ["es2017", "dom","ESNext.Array", "DOM", "ESNext"],
+    "lib": ["es2017", "dom", "ESNext.Array", "DOM", "ESNext"],
     "paths": {
       "@pages/*": ["/src/lib/pages/*"],
       "@interfaces/*": ["/src/lib/interfaces/*"],
-      "@tests/*": ["/src/tests/*"],
-
+      "@tests/*": ["/src/tests/*"]
     }
   },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "artifacts/**"
-  ]
+  "include": ["src/**/*.ts"],
+  "exclude": ["artifacts/**"]
 }
