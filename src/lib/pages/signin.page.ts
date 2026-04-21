@@ -1,5 +1,6 @@
 import type { Page, Locator } from "@playwright/test";
 import { BasePage } from "./base.page";
+import { faker } from "@faker-js/faker";
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -14,11 +15,12 @@ export class SignInPage extends BasePage {
   readonly fname: Locator;
   readonly lname: Locator;
   readonly dob: Locator;
-  readonly address: Locator;
+  readonly country: Locator;
   readonly postal: Locator;
+  readonly houseNumber: Locator;
+  readonly address: Locator;
   readonly city: Locator;
   readonly state: Locator;
-  readonly country: Locator;
   readonly phone: Locator;
   readonly registerBtn: Locator;
 
@@ -37,11 +39,12 @@ export class SignInPage extends BasePage {
     this.fname = this.page.locator('[data-test="first-name"]');
     this.lname = this.page.locator('[data-test="last-name"]');
     this.dob = this.page.locator('[data-test="dob"]');
-    this.address = this.page.locator('[data-test="address"]');
-    this.postal = this.page.locator('[data-test="postcode"]');
-    this.city = this.page.locator('[data-test="city"]');
-    this.state = this.page.locator('[data-test="state"]');
     this.country = this.page.locator('[data-test="country"]');
+    this.postal = this.page.getByPlaceholder('Your Postcode *');
+    this.houseNumber = this.page.getByPlaceholder('e.g. 42 *');
+    this.address = this.page.getByPlaceholder('Your Street *');
+    this.city = this.page.getByPlaceholder('Your City *');
+    this.state = this.page.getByPlaceholder('Your State *');
     this.phone = this.page.locator('[data-test="phone"]');
     this.registerBtn = this.page.locator('[data-test="register-submit"]');
     this.navMenu = this.page.locator('[data-test="nav-menu"]');
@@ -52,19 +55,20 @@ export class SignInPage extends BasePage {
   }
 
   async register(email: string, password: string) {
-    const phone = this.generateRandomPhone();
-    const dob = this.generateRandomDob();
-    const country = this.selectRandomCountry();
+    const phone = faker.string.numeric(10);
+    const dob = faker.date.birthdate({ min: 20, max: 70, mode: 'age' }).toISOString().split('T')[0];
+    const country = faker.helpers.arrayElement(["VG", "UA", "CO", "GB", "US", "CA"]);
 
     await this.registerLink.click();
     await this.fname.fill(process.env.FIRST_NAME);
     await this.lname.fill(process.env.LAST_NAME);
     await this.dob.fill(dob);
-    await this.address.fill("123 Main St");
+    await this.country.selectOption({ value: country });
     await this.postal.fill("12345");
+    await this.houseNumber.fill("42");
+    await this.address.fill("123 Main St");
     await this.city.fill("Hogsmeade");
     await this.state.fill("Village");
-    await this.country.selectOption({ value: country });
     await this.phone.fill(phone);
     await this.email.fill(email);
     await this.password.fill(password);
@@ -79,68 +83,4 @@ export class SignInPage extends BasePage {
     await this.password.fill(password);
     await this.loginBtn.click();
   }
-
-  generateRandomEmail() {
-    const timestamp = new Date().getTime();
-    const domain = `hogwarts.com`;
-    return `griffindor+${timestamp}@${domain}`.toLowerCase();
-  }
-
-  generateRandomPassword() {
-    const symbols = "!@#$%^&*()_+[]{}|;:,.<>?";
-    const getRandomChar = (chars: string) =>
-      chars[Math.floor(Math.random() * chars.length)];
-
-    let password = "";
-    while (
-      password.length < 8 ||
-      !/[A-Z]/.test(password) ||
-      !/[a-z]/.test(password) ||
-      !/\d/.test(password) ||
-      !/[!@#$%^&*()_+[\]{}|;:,.<>?]/.test(password)
-    ) {
-      password = "";
-      for (let i = 0; i < 8; i++) {
-        const charType = Math.floor(Math.random() * 4);
-        if (charType === 0) {
-          password += getRandomChar("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-        } else if (charType === 1) {
-          password += getRandomChar("abcdefghijklmnopqrstuvwxyz");
-        } else if (charType === 2) {
-          password += getRandomChar("0123456789");
-        } else {
-          password += getRandomChar(symbols);
-        }
-      }
-    }
-    return password;
-}
-
-  selectRandomCountry() {
-    // All country codes can be added here, only this few for testing purposes
-    const countries = ["VG", "UA", "CO", "GB", "US", "CA"];
-    const randomIndex = Math.floor(Math.random() * countries.length);
-    return countries[randomIndex];
-  }
-
-  generateRandomPhone() {
-    return Math.floor(1000000000 + Math.random() * 9000000000).toString();
-  }
-
-  generateRandomDob() {
-    const date = new Date();
-    const currentYear = date.getFullYear();
-    const minYear = currentYear - 70;
-    const maxYear = currentYear - 20;
-
-    date.setFullYear(Math.floor(Math.random() * (maxYear - minYear + 1)) + minYear);
-    date.setMonth(Math.floor(Math.random() * 12));
-    date.setDate(Math.floor(Math.random() * 28) + 1);
-
-    const day = date.getDate().toString().padStart(2, "0");
-    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are 0-based
-    const year = date.getFullYear();
-
-    return `${year}-${month}-${day}`;
-}
 }
