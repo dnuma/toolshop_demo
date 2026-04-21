@@ -69,6 +69,9 @@ export class SignInPage extends BasePage {
     await this.email.fill(email);
     await this.password.fill(password);
     await this.registerBtn.click();
+
+    console.log(`Registered user: ${email} / ${password}`);
+    
   }
 
   async signIn(email: string, password: string) {
@@ -93,6 +96,7 @@ export class SignInPage extends BasePage {
       password.length < 8 ||
       !/[A-Z]/.test(password) ||
       !/[a-z]/.test(password) ||
+      !/\d/.test(password) ||
       !/[!@#$%^&*()_+[\]{}|;:,.<>?]/.test(password)
     ) {
       password = "";
@@ -110,7 +114,7 @@ export class SignInPage extends BasePage {
       }
     }
     return password;
-  }
+}
 
   selectRandomCountry() {
     // All country codes can be added here, only this few for testing purposes
@@ -126,12 +130,12 @@ export class SignInPage extends BasePage {
   generateRandomDob() {
     const date = new Date();
     const currentYear = date.getFullYear();
-    const minYear = currentYear - 100;
+    const minYear = currentYear - 70;
     const maxYear = currentYear - 20;
 
     date.setFullYear(Math.floor(Math.random() * (maxYear - minYear + 1)) + minYear);
     date.setMonth(Math.floor(Math.random() * 12));
-    date.setDate(Math.floor(Math.random() * 28) + 1); // Ensure date is between 1 and 28
+    date.setDate(Math.floor(Math.random() * 28) + 1);
 
     const day = date.getDate().toString().padStart(2, "0");
     const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are 0-based
