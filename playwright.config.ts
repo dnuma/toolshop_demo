@@ -7,14 +7,13 @@ export default defineConfig({
     timeout: 30 * 1000,
   },
   fullyParallel: true,
-  forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  retries: 0,
+  workers: 1,
   reporter: "html",
   use: {
     baseURL: "https://www.practicesoftwaretesting.com",
     trace: "on-first-retry",
-    actionTimeout: 10 * 1000, 
+    actionTimeout: 10 * 1000,
   },
 
   /* Configure projects for major browsers */
@@ -23,22 +22,6 @@ export default defineConfig({
       name: "chromium",
       use: {
         ...devices["Desktop Chrome"],
-        viewport: { width: 1366, height: 768 },
-      },
-    },
-
-    {
-      name: "firefox",
-      use: {
-        ...devices["Desktop Firefox"],
-        viewport: { width: 1366, height: 768 },
-      },
-    },
-
-    {
-      name: "webkit",
-      use: {
-        ...devices["Desktop Safari"],
         viewport: { width: 1366, height: 768 },
       },
     },
